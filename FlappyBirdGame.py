@@ -153,12 +153,16 @@ class Base:
 
 
 
-def draw_window(win, birds, pipes, base, score):
+def draw_window(win, birds, pipes, base, score, GEN):
     win.blit(BG_IMG,(0,0)) #drawing background to display
     for pipe in pipes:
         pipe.draw(win) #drawing pipe
     text = STAT_FONT.render("Score: " + str(score), 1, (255,255,255))
     win.blit(text, (WIN_WIDTH - 10 - text.get_width(), 10))
+
+    text = STAT_FONT.render("Gen: " + str(GEN), 1, (255, 255, 255))
+    win.blit(text, (10, 10))
+
     base.draw(win) #drawing base
 
     for bird in birds:
