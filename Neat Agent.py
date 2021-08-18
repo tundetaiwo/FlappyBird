@@ -1,4 +1,5 @@
 from FlappyBirdGame import Pipe, Base, Bird, draw_window
+from Helper import plot
 import neat
 import time
 import os
@@ -7,8 +8,10 @@ pygame.font.init()
 # Initialising dimensions of the game
 WIN_WIDTH = 500
 WIN_HEIGHT = 800
-
+GEN = 0
 def fitness(genomes, config):
+    global GEN
+    GEN += 1
     nets = []  # keeping track of neural net for each bird
     ge = []  # Keeping track of genome
     # bird = Bird(230, 350) # Initialising bird class
@@ -28,7 +31,7 @@ def fitness(genomes, config):
     score = 0
     run = True
     while run:
-        clock.tick(30) # setting clock to be 30 FPS
+        clock.tick(120) # setting clock to be 30 FPS
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -37,7 +40,7 @@ def fitness(genomes, config):
 
         pipe_ind = 0
         if len(birds) > 0:
-            print(len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width())
+            #print(len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width())
             if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():
                 pipes_ind = 1
         else:
@@ -87,7 +90,7 @@ def fitness(genomes, config):
                 ge.pop(i)
 
         base.move()
-        draw_window(win, birds, pipes, base, score)
+        draw_window(win, birds, pipes, base, score, GEN)
 
 
 
@@ -103,7 +106,8 @@ def run(config_path):
 
     p.add_reporter(neat.StdOutReporter(True))
     p.add_reporter(neat.StatisticsReporter())
-    winner = p.run(fitness,50)
+
+    winner = p.run(fitness,100)  ##args - fitness func
 
 
 
